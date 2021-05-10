@@ -14,7 +14,6 @@
 	<ui:define name="conteudo">
 		<h:form>
 			<h:messages id="messages" />
-
 			<fieldset>
 				<legend>Dados do Livro</legend>
 				<h:panelGrid columns="2">
@@ -43,7 +42,6 @@
 
 				</h:panelGrid>
 			</fieldset>
-
 			<fieldset>
 				<legend>Dados do Autor</legend>
 
@@ -65,21 +63,20 @@
 					<h:column>
 						<h:outputText value="#{autor.nome}" />
 					</h:column>
+					
+					<h:column>
+						<h:commandLink value="X" action="#{livroBean.removerAutorDoLivro(autor)}" />
+					</h:column>
 				</h:dataTable>
 			</fieldset>
-
-
 			<h:commandButton value="Gravar" action="#{livroBean.gravar}">
 				<f:ajax execute="@form"
 					render="@form :formTabelaLivros:tabelaLivros" />
 			</h:commandButton>
-
 			<br />
 			<h:commandLink value="Cadastrar novo autor"
 				action="#{livroBean.formAutor}" immediate="true" />
-
 		</h:form>
-
 		<hr />
 		<h:form id="formTabelaLivros">
 			<h:dataTable value="#{livroBean.livros}" var="livro"

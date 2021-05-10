@@ -11,7 +11,7 @@
 	<ui:define name="titulo">
             Novo Autor
     </ui:define>
-    
+
 	<ui:define name="conteudo">
 		<h:form id="autor">
 			<fieldset>
@@ -33,10 +33,39 @@
 					<br />
 
 					<h:commandLink value="Cadastro de livros"
-						action="#{livroBean.formLivro}" immediate="true" />
+						action="#{autorBean.formLivro}" immediate="true" />
 
 				</h:panelGrid>
 			</fieldset>
+
+		</h:form>
+
+		<h:form>
+			<fieldset>
+				<legend> Lista de autores </legend>
+				<h:panelGrid>
+					<h:dataTable value="#{autorBean.autores}" var="autor"
+						id="tabelaAutores">
+						<h:column>
+							<h:outputText value="#{autor.nome}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Alterar</f:facet>
+							<h:commandLink value="Alterar"
+								action="#{autorBean.carregar(autor)}" />
+						</h:column>
+
+						<h:column>
+							<h:commandLink value="X"
+								action="#{autorBean.removerAutor(autor)}" />
+						</h:column>
+
+					</h:dataTable>
+
+				</h:panelGrid>
+			</fieldset>
+
 		</h:form>
 
 	</ui:define>
