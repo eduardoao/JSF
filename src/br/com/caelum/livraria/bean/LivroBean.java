@@ -22,6 +22,9 @@ public class LivroBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Livro livro = new Livro();
+	
+	private List<Livro> livros;
+
 
 	private Integer autorId;
 
@@ -38,7 +41,8 @@ public class LivroBean implements Serializable {
 	}
 
 	public List<Livro> getLivros() {
-		return new DAO<Livro>(Livro.class).listaTodos();
+		livros =  new DAO<Livro>(Livro.class).listaTodos();
+		return livros;
 	}
 
 	public List<Autor> getAutores() {
@@ -82,4 +86,12 @@ public class LivroBean implements Serializable {
 		System.out.println("Chamando o formulário do Autor");
 		return "autor?faces-redirect=true";
 	}
+	
+	
+	public void remover(Livro livro) {
+	    System.out.println("Removendo livro " + livro.getTitulo());
+	    new DAO<Livro>(Livro.class).remove(livro);
+	    this.livros.remove(livro);
+	}
+	
 }
