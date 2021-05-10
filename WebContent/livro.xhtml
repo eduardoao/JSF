@@ -70,7 +70,8 @@
 
 
 			<h:commandButton value="Gravar" action="#{livroBean.gravar}">
-				<f:ajax execute="@form" render="@form :formTabelaLivros:tabelaLivros" />
+				<f:ajax execute="@form"
+					render="@form :formTabelaLivros:tabelaLivros" />
 			</h:commandButton>
 
 			<br />
@@ -110,8 +111,13 @@
 				</h:column>
 
 				<h:column>
-					<f:facet name="header">Remover</f:facet>					
-					 <h:commandLink value="Remover" action="#{livroBean.remover(livro)}" />
+					<f:facet name="header">Alterar</f:facet>
+					<h:commandLink value="Alterar" action="#{livroBean.carregar(livro)}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink value="Remover" action="#{livroBean.remover(livro)}" />
 				</h:column>
 
 			</h:dataTable>
