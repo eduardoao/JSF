@@ -21,8 +21,11 @@ public class Livro {
 	private String titulo;
 	private String isbn;
 	private double preco;
+	private String capa;
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLancamento = Calendar.getInstance();
+	private Integer quantidade;
+
 	@ManyToMany
 	private List<Autor> autores = new ArrayList<Autor>();
 
@@ -76,6 +79,22 @@ public class Livro {
 
 	public void setDataLancamento(Calendar dataLancamento) {
 		this.dataLancamento = dataLancamento;
+	}
+	
+	public String getCapa() {
+		return capa;
+	}
+
+	public void setCapa(String capa) {
+		this.capa = capa;
+	}
+	
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
 	}
 
 	

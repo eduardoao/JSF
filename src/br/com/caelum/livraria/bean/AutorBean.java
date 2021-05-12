@@ -49,7 +49,7 @@ public class AutorBean {
 		return autor;
 	}
 
-	public void gravar() {
+	public void gravarAutor() {
 		System.out.println("Gravando autor " + this.autor.getNome());
 		
 		if (this.autor.getId() == null) {
@@ -78,7 +78,6 @@ public class AutorBean {
 	public void carregar(Autor autor) {
 		System.out.println("Carregando o autor: " + autor.getNome());
 		this.autor = autor;
-	}
-	
+	}	
 	
 }

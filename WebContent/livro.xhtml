@@ -46,6 +46,22 @@
 						<f:convertDateTime pattern="dd/MM/yyyy"
 							timeZone="America/Sao_Paulo" />
 					</h:inputText>
+					
+					<h:outputLabel value="Capa:" for="capa" />
+					<h:inputText id="capa" value="#{livroBean.livro.capa}"
+						required="true" requiredMessage="Capa do livro é obrigatória"
+						validatorMessage="Capa não pode ser superior a 600">
+						<f:validateLength maximum="600" />
+						<f:ajax event="blur" render="messages" />
+					</h:inputText>
+					
+					<h:outputLabel value="Quantidade:" for="quantidade" />
+					<h:inputText id="quantidade" value="#{livroBean.livro.quantidade}"
+						required="true" requiredMessage="Quantidade é obrigatória"
+						validatorMessage="quantidade não pode ser superior a 999">
+						<f:validateLength maximum="999" />
+						<f:ajax event="blur" render="messages" />
+					</h:inputText>
 
 				</h:panelGrid>
 			</fieldset>
