@@ -30,6 +30,20 @@ public class LivroBean implements Serializable {
 
 	private Integer autorId;
 
+	private Integer livroId;
+
+	public Integer getLivroId() {
+		return livroId;
+	}
+
+	public void setLivroId(Integer livroId) {
+		this.livroId = livroId;
+	}
+	
+    public void carregaPelaId() {
+        this.livro = new DAO<Livro>(Livro.class).buscaPorId(this.livroId);
+    }
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Autor> autores = new ArrayList<Autor>();
 
@@ -65,7 +79,7 @@ public class LivroBean implements Serializable {
 		System.out.println("Escrito por: " + autor.getNome());
 	}
 
-	public void gravar() {		
+	public void gravar() {
 
 		if (livro.getAutores().isEmpty()) {
 			FacesContext.getCurrentInstance().addMessage("autor",
@@ -108,8 +122,8 @@ public class LivroBean implements Serializable {
 		System.out.println("Carregando o livro: " + livro.getTitulo());
 		this.livro = livro;
 	}
-	
-	//Remove o autor associado a um determinado livro
+
+	// Remove o autor associado a um determinado livro
 	public void removerAutorDoLivro(Autor autor) {
 		System.out.println("Removendo autor: " + autor.getNome() + "do livro: " + livro.getTitulo());
 		this.livro.getAutores().remove(autor);

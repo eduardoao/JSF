@@ -8,7 +8,6 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.caelum.livraria.dao.DAO;
 import br.com.caelum.livraria.modelo.Autor;
-import br.com.caelum.livraria.modelo.Livro;
 
 @SuppressWarnings("deprecation")
 @ManagedBean
@@ -17,6 +16,21 @@ public class AutorBean {
 
 	private Autor autor = new Autor();
 	private List<Autor> autores = new ArrayList<Autor>(); 
+	
+	private Integer autorId;
+
+	public Integer getAutorId() {
+	    return autorId;
+	}
+
+	public void setAutorId(Integer autorId) {
+	    this.autorId = autorId;
+	}
+
+	public void carregarAutorPelaId() {
+		if (this.autorId == null) return;
+	    this.autor = new DAO<Autor>(Autor.class).buscaPorId(autorId);
+	}
 
 	public List<Autor> getAutores() {
 		autores = new DAO<Autor>(Autor.class).listaTodos();
