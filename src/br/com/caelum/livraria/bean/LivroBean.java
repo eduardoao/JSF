@@ -101,8 +101,8 @@ public class LivroBean implements Serializable {
 	public void comecaComDigitoUm(FacesContext fc, UIComponent component, Object value) throws ValidatorException {
 
 		String valor = value.toString();
-		if (!valor.startsWith("1")) {
-			throw new ValidatorException(new FacesMessage("ISBN deveria começar com 1"));
+		if (!valor.startsWith("9")) {
+			throw new ValidatorException(new FacesMessage("ISBN deveria começar com 9"));
 		}
 
 	}
@@ -127,6 +127,10 @@ public class LivroBean implements Serializable {
 	public void removerAutorDoLivro(Autor autor) {
 		System.out.println("Removendo autor: " + autor.getNome() + "do livro: " + livro.getTitulo());
 		this.livro.getAutores().remove(autor);
+	}
+	
+	public void novoLivro() {
+		this.livro = new Livro();	
 	}
 
 }

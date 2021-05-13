@@ -21,13 +21,14 @@
 
 	<ui:define name="conteudo">
 		<h:form id="autor">
-			<p:fieldset legend="Dados do Autor">				
+			<p:fieldset legend="Dados do Autor">
 				<h:panelGrid columns="3">
 					<p:outputLabel value="Nome:" for="nome" />
 					<p:inputText id="nome" value="#{autorBean.autor.nome}"
 						required="true">
 						<f:validateLength minimum="5" />
-						<f:passThroughAttribute name="placeholder" value="Nome completo do autor" />
+						<f:passThroughAttribute name="placeholder"
+							value="Nome completo do autor" />
 						<f:ajax event="blur" render="messageNome" />
 					</p:inputText>
 
@@ -45,8 +46,8 @@
 					<p:message for="email" id="messageEmail" />
 
 					<h:commandButton value="Gravar" action="#{autorBean.gravarAutor}"
-						process="@form" update="@form:formTabelaAutors" />											
-					
+						process="@form" update="@form:formTabelaAutors" />
+
 
 					<p:commandLink value="Cadastro de livros"
 						action="#{autorBean.formLivro}" immediate="true" />

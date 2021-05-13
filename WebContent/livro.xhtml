@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 
 
 <ui:composition template="_template.xhtml">
@@ -11,7 +12,7 @@
 	<f:metadata>
 		<f:viewParam name="livroId" value="#{livroBean.livroId}" />
 		<f:viewAction action="#{livroBean.carregaPelaId}"
-			if="#{param['livroId'] != null}" />
+			if="#{param.livroId != null}" />
 	</f:metadata>
 
 	<ui:define name="titulo">
@@ -19,132 +20,182 @@
     </ui:define>
 
 	<ui:define name="conteudo">
-		<h:form>
-			<h:messages id="messages" />
-			<fieldset>
-				<legend>Dados do Livro</legend>
-				<h:panelGrid columns="2">
+		<!-- Dados para cadastro do livro -->
+		<div class="card crud-demo">
+			<p:growl id="messages" showDetail="true" />
 
-					<h:outputLabel value="Titulo:" for="titulo" />
-					<h:inputText id="titulo" value="#{livroBean.livro.titulo}"
-						required="true" requiredMessage="Título obrigatório"
-						validatorMessage="Título não pode ser superior a 40">
-						<f:validateLength maximum="40" />
-						<f:ajax event="blur" render="messages" />
-					</h:inputText>
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Novo Livro" icon="pi pi-plus"
+						actionListener="#{livroBean.novoLivro}"
+						update="manage-product-content"
+						oncomplete="PF('manageProductDialog').show()"
+						styleClass="ui-button-success" style="margin-right: .5rem">
 
-					<h:outputLabel value="ISBN:" for="isbn" />
-					<h:inputText id="isbn" value="#{livroBean.livro.isbn}"
-						validator="#{livroBean.comecaComDigitoUm}" />
+						<p:resetInput target="manage-product-content" />
 
-					<h:outputLabel value="Preço:" for="preco" />
-					<h:inputText id="preco" value="#{livroBean.livro.preco}" />
+					</p:commandButton>
 
-					<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
-					<h:inputText id="dataLancamento"
-						value="#{livroBean.livro.dataLancamento.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy"
-							timeZone="America/Sao_Paulo" />
-					</h:inputText>
-					
-					<h:outputLabel value="Capa:" for="capa" />
-					<h:inputText id="capa" value="#{livroBean.livro.capa}"
-						required="true" requiredMessage="Capa do livro é obrigatória"
-						validatorMessage="Capa não pode ser superior a 600">
-						<f:validateLength maximum="600" />
-						<f:ajax event="blur" render="messages" />
-					</h:inputText>
-					
-					<h:outputLabel value="Quantidade:" for="quantidade" />
-					<h:inputText id="quantidade" value="#{livroBean.livro.quantidade}"
-						required="true" requiredMessage="Quantidade é obrigatória"
-						validatorMessage="quantidade não pode ser superior a 999">
-						<f:validateLength maximum="999" />
-						<f:ajax event="blur" render="messages" />
-					</h:inputText>
+					<p:commandLink value="Autores" action="#{livroBean.formAutor}"
+						immediate="true" update="@all" />
+				</p:toolbarGroup>
+			</p:toolbar>
 
-				</h:panelGrid>
-			</fieldset>
-			<fieldset>
-				<legend>Dados do Autor</legend>
+			<h:form>
+				<h:messages id="messages" />
+			</h:form>
 
-				<h:outputLabel value="Selecione Autor:" for="autor" />
-				<h:selectOneMenu value="#{livroBean.autorId}" id="autor">
+			<!--  Cadastro e alteração de livros -->
+			<h:form id="manage-product-content">
+				<p:dialog header="Product Details" showEffect="fade" modal="true"
+					widgetVar="manageProductDialog" responsive="true">
 
-					<f:selectItems value="#{livroBean.autores}" var="autor"
-						itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
-				</h:selectOneMenu>
+					<p:outputPanel id="manage-product-content-painel" class="ui-fluid">
 
-				<h:commandButton value="Gravar Autor"
-					action="#{livroBean.gravarAutor}">
-					<f:ajax execute="autor" render="tabelaAutores" />
-				</h:commandButton>
+						<p:fieldset legend="Dados do Livro">
+							<h:panelGrid columns="2">
 
+								<h:outputLabel value="Titulo:" for="titulo" />
+								<h:inputText id="titulo" value="#{livroBean.livro.titulo}"
+									required="true" requiredMessage="Título obrigatório"
+									validatorMessage="Título não pode ser superior a 40">
+									<f:validateLength maximum="40" />
+									<f:ajax event="blur" render="messages" />
+								</h:inputText>
 
-				<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
-					id="tabelaAutores">
-					<h:column>
-						<h:outputText value="#{autor.nome}" />
-					</h:column>
+								<h:outputLabel value="ISBN:" for="isbn" />
+								<h:inputText id="isbn" value="#{livroBean.livro.isbn}"
+									validator="#{livroBean.comecaComDigitoUm}" />
 
-					<h:column>
-						<h:commandLink value="X"
-							action="#{livroBean.removerAutorDoLivro(autor)}" />
-					</h:column>
-				</h:dataTable>
-			</fieldset>
-			<h:commandButton value="Gravar" action="#{livroBean.gravar}">
-				<f:ajax execute="@form"
-					render="@form :formTabelaLivros:tabelaLivros" />
-			</h:commandButton>
-			<br />
-			<h:commandLink value="Cadastrar novo autor"
-				action="#{livroBean.formAutor}" immediate="true" />
-		</h:form>
-		<hr />
-		<h:form id="formTabelaLivros">
-			<h:dataTable value="#{livroBean.livros}" var="livro"
-				id="tabelaLivros">
-				<h:column>
-					<f:facet name="header">Título</f:facet>
-					<h:outputText value="#{livro.titulo}" />
-				</h:column>
+								<h:outputLabel value="Preço:" for="preco" />
+								<h:inputText id="preco" value="#{livroBean.livro.preco}" />
 
-				<h:column>
-					<f:facet name="header">ISBN</f:facet>
-					<h:outputText value="#{livro.isbn}" />
-				</h:column>
+								<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
+								<h:inputText id="dataLancamento"
+									value="#{livroBean.livro.dataLancamento.time}">
+									<f:convertDateTime pattern="dd/MM/yyyy"
+										timeZone="America/Sao_Paulo" />
+								</h:inputText>
 
-				<h:column>
-					<f:facet name="header">Preço</f:facet>
-					<h:outputText value="#{livro.preco}">
-						<f:convertNumber type="currency" pattern="R$ #0.00"
-							currencySymbol="R$" locale="pt_BR" />
-					</h:outputText>
-				</h:column>
+								<h:outputLabel value="Capa:" for="capa" />
+								<h:inputText id="capa" value="#{livroBean.livro.capa}"
+									required="true" requiredMessage="Capa do livro é obrigatória"
+									validatorMessage="Capa não pode ser superior a 600">
+									<f:validateLength maximum="600" />
+									<f:ajax event="blur" render="messages" />
+								</h:inputText>
 
-				<h:column>
-					<f:facet name="header">Data</f:facet>
-					<h:outputText value="#{livro.dataLancamento.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy"
-							timeZone="America/Sao_Paulo" />
-					</h:outputText>
-				</h:column>
+								<h:outputLabel value="Quantidade:" for="quantidade" />
+								<h:inputText id="quantidade"
+									value="#{livroBean.livro.quantidade}" required="true"
+									requiredMessage="Quantidade é obrigatória"
+									validatorMessage="quantidade não pode ser superior a 999">
+									<f:validateLength maximum="999" />
+									<f:ajax event="blur" render="messages" />
+								</h:inputText>
+							</h:panelGrid>
 
-				<h:column>
-					<f:facet name="header">Alterar</f:facet>
-					<h:commandLink value="Alterar"
-						action="#{livroBean.carregar(livro)}" />
-				</h:column>
+							<h:panelGrid>
+								<h:commandButton value="Gravar Livro"
+									action="#{livroBean.gravar}" process="@form"
+									update="@form:formTabelaLivros" />
 
-				<h:column>
-					<f:facet name="header">Remover</f:facet>
-					<h:commandLink value="Remover" action="#{livroBean.remover(livro)}" />
-				</h:column>
+							</h:panelGrid>
+						</p:fieldset>
 
-			</h:dataTable>
-		</h:form>
+						<p:fieldset legend="Dados do Autor">
+
+							<p:panelGrid columns="4">
+								<p:outputLabel value="Selecione Autor:" for="autor" />
+
+								<p:selectOneMenu value="#{livroBean.autorId}" id="autor">
+									<f:selectItems value="#{livroBean.autores}" var="autor"
+										itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
+								</p:selectOneMenu>
+
+								<p:commandButton value="Gravar Autor"
+									action="#{livroBean.gravarAutor}" process="@this autor"
+									update="tabelaAutores" />
+
+								<p:commandLink value="ou cadastrar novo autor"
+									action="#{livroBean.formAutor}" immediate="true" update="@all" />
+							</p:panelGrid>
+
+							<p:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
+								id="tabelaAutores">
+								<p:column>
+									<h:outputText value="#{autor.nome}" />
+								</p:column>
+
+								<p:column>
+									<p:commandLink value="X"
+										action="#{livroBean.removerAutorDoLivro(autor)}"
+										update="tabelaAutores" process="@this" />
+								</p:column>
+							</p:dataTable>
+
+						</p:fieldset>
+
+					</p:outputPanel>
+
+				</p:dialog>
+
+			</h:form>
+
+			<!-- Tabela com informações sobre livros -->
+			<h:form id="formTabelaLivros">
+				<p:dataTable value="#{livroBean.livros}" var="livro"
+					id="tabelaLivros">
+					<p:column>
+						<f:facet name="header">Título</f:facet>
+						<h:outputText value="#{livro.titulo}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">ISBN</f:facet>
+						<h:outputText value="#{livro.isbn}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Preço</f:facet>
+						<h:outputText value="#{livro.preco}">
+							<f:convertNumber type="currency" pattern="R$ #0.00"
+								currencySymbol="R$" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Data</f:facet>
+						<h:outputText value="#{livro.dataLancamento.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Alterar</f:facet>
+						<p:commandLink value="Alterar"
+							action="#{livroBean.carregar(livro)}"
+							oncomplete="PF('manageProductDialog').show()" process="@this"
+							update="manage-product-content">
+						</p:commandLink>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandLink value="Remover"
+							action="#{livroBean.remover(livro)}" update="formTabelaLivros" />
+
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+
+		</div>
+
 	</ui:define>
+
 </ui:composition>
 
 </html>
