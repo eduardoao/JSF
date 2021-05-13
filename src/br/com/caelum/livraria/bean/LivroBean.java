@@ -39,10 +39,10 @@ public class LivroBean implements Serializable {
 	public void setLivroId(Integer livroId) {
 		this.livroId = livroId;
 	}
-	
-    public void carregaPelaId() {
-        this.livro = new DAO<Livro>(Livro.class).buscaPorId(this.livroId);
-    }
+
+	public void carregaPelaId() {
+		this.livro = new DAO<Livro>(Livro.class).buscaPorId(this.livroId);
+	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Autor> autores = new ArrayList<Autor>();
@@ -60,7 +60,9 @@ public class LivroBean implements Serializable {
 	}
 
 	public List<Livro> getLivros() {
-		livros = new DAO<Livro>(Livro.class).listaTodos();
+		if (livros == null) {
+			livros = new DAO<Livro>(Livro.class).listaTodos();
+		}
 		return livros;
 	}
 
@@ -90,6 +92,7 @@ public class LivroBean implements Serializable {
 		if (this.livro.getId() == null) {
 			System.out.println("Gravando livro " + this.livro.getTitulo());
 			new DAO<Livro>(Livro.class).adiciona(livro);
+			livros = new DAO<Livro>(Livro.class).listaTodos(); 
 		} else {
 			System.out.println("Atualizando livro " + this.livro.getTitulo());
 			new DAO<Livro>(Livro.class).atualiza(this.livro);
@@ -128,9 +131,9 @@ public class LivroBean implements Serializable {
 		System.out.println("Removendo autor: " + autor.getNome() + "do livro: " + livro.getTitulo());
 		this.livro.getAutores().remove(autor);
 	}
-	
+
 	public void novoLivro() {
-		this.livro = new Livro();	
+		this.livro = new Livro();
 	}
 
 }
