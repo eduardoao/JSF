@@ -1,5 +1,6 @@
 package br.com.caelum.livraria.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -13,7 +14,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Livro {
+public class Livro implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -22,15 +25,12 @@ public class Livro {
 	private String titulo;
 	private String isbn;
 	private double preco;
-	private String capa;
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLancamento = Calendar.getInstance();
-	private Integer quantidade;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Autor> autores = new ArrayList<Autor>();
 
-	
 	public List<Autor> getAutores() {
 		return autores;
 	}
@@ -73,7 +73,7 @@ public class Livro {
 	public void setPreco(double preco) {
 		this.preco = preco;
 	}
-	
+
 	public Calendar getDataLancamento() {
 		return dataLancamento;
 	}
@@ -81,23 +81,9 @@ public class Livro {
 	public void setDataLancamento(Calendar dataLancamento) {
 		this.dataLancamento = dataLancamento;
 	}
-	
-	public String getCapa() {
-		return capa;
-	}
 
-	public void setCapa(String capa) {
-		this.capa = capa;
+	public void removeAutor(Autor autor) {
+		this.autores.remove(autor);
 	}
-	
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	
 
 }

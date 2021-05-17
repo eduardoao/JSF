@@ -10,41 +10,40 @@ import br.com.caelum.livraria.modelo.Usuario;
 
 public class Autorizador implements PhaseListener {
 
-    private static final long serialVersionUID = 1L;
-    
-    @Override
-    public void afterPhase(PhaseEvent event) {
+	private static final long serialVersionUID = 1L;
 
-        FacesContext context = event.getFacesContext();
-        String nomePagina = context.getViewRoot().getViewId();
+	@Override
+	public void afterPhase(PhaseEvent evento) {
 
-        System.out.println(nomePagina);
+		FacesContext context = evento.getFacesContext();
+		String nomePagina = context.getViewRoot().getViewId();
+	
+		System.out.println(nomePagina);
+		
+		if("/login.xhtml".equals(nomePagina)) {
+			return;
+		}
+		
+		Usuario usuarioLogado = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
+		
+		if(usuarioLogado != null) {
+			return;
+		}
+		
+		//redirecionamento para login.xhtml
+		
+		NavigationHandler handler = context.getApplication().getNavigationHandler();
+		handler.handleNavigation(context, null, "/login?faces-redirect=true");
+		context.renderResponse();
+	} 
 
-        if ("/login.xhtml".equals(nomePagina)) {
-            return;
-        }
+	@Override
+	public void beforePhase(PhaseEvent event) {
+	}
 
-        Usuario usuarioLogado = (Usuario) context.getExternalContext()
-                .getSessionMap().get("usuarioLogado");
+	@Override
+	public PhaseId getPhaseId() {
+		return PhaseId.RESTORE_VIEW;
+	}
 
-        if(usuarioLogado != null) {
-            return;
-        }
-
-        NavigationHandler handler = context.getApplication().getNavigationHandler();
-        handler.handleNavigation(context, null, "/login?faces-redirect=true");
-
-        //precisamos dizer ao JSF que queremos pular todas as fases do ciclo de vida 
-        context.renderResponse();        
-    }
-
-    @Override
-    public void beforePhase(PhaseEvent event) {
-    }
-
-    @Override
-    public PhaseId getPhaseId() {
-        return PhaseId.RESTORE_VIEW;
-    }
-  
 }
