@@ -9,13 +9,14 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Named;
 
 import br.com.caelum.livraria.dao.DAO;
 import br.com.caelum.livraria.modelo.Autor;
 import br.com.caelum.livraria.modelo.Livro;
 
-@ManagedBean
-@ViewScoped
+@Named
+@ViewScoped //javax.faces.view.ViewScoped
 public class LivroBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
