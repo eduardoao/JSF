@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import br.com.caelum.livraria.dao.UsuarioDao;
 import br.com.caelum.livraria.modelo.Usuario;
+import br.com.caelum.livraria.util.JsfUtil;
 
 @Named
 @ViewScoped //javax.faces.view.ViewScoped
@@ -20,6 +21,9 @@ public class LoginBean implements Serializable {
 	
 	@Inject
 	private UsuarioDao usuarioDao;
+	
+	@Inject
+	JsfUtil jsfUtil;
 
 	public Usuario getUsuario() {
 		return usuario;

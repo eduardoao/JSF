@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import br.com.caelum.livraria.modelo.Usuario;
+import br.com.caelum.livraria.util.JsfUtil;
 
 public class UsuarioDao implements Serializable {
 	
@@ -16,6 +17,7 @@ public class UsuarioDao implements Serializable {
 
 	@Inject
 	EntityManager em;
+	
 
 	private DAO<Usuario> usuarioDao;
 

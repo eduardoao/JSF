@@ -1,7 +1,2 @@
 INDEX VERSION 1.4+D:\Cursos\ALURA\JSF-3\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-3411433805.index
-2835863354.index
-396846934.index
-1203730363.index
-381912716.index
 4010404357.index
